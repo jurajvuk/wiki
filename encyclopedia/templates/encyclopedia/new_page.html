@@ -6,11 +6,24 @@
 
 {% block body %}
     <h1>Create New Page</h1>
-
+    
     <form action="{% url 'create' %}" method="post">
         {% csrf_token %}
-        {{ form }}
+        <div class="inputTitleLabel">
+            {{ form.new_page_title.label_tag }}
+        </div>
+        <div class="inputTitle">
+            {{ form.new_page_title }}
+        </div>
+        <br>
+        <div class="inputContentLabel">
+            {{ form.new_page_content.label_tag }}
+        </div>
+        <div class="inputContent">
+            {{ form.new_page_content }}
+        </div>
+        <br>
         <input type="submit">
     </form>
-    
+    <p>{{ errorMessage }}</p>
 {% endblock %}

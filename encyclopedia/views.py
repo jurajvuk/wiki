@@ -1,11 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django import forms
 from . import util
 from markdown2 import Markdown
 
 class NewPageForm(forms.Form):
     new_page_title = forms.CharField(label="Title")
-    new_page_content = forms.CharField(label="Content")
+    new_page_content = forms.CharField(label="Content", widget=forms.Textarea(attrs={'rows':10, 'cols':150}))
 
 def index(request):
     return render(request, "encyclopedia/index.html", {
@@ -47,6 +47,20 @@ def search(request):
             })
 
 def create(request):
-    return render(request, "encyclopedia/new_page.html", {
-        "form": NewPageForm()
-    })
+    if request.method == "GET": 
+        return render(request, "encyclopedia/new_page.html", {
+            "form": NewPageForm()
+        })
+    else:
+        title = request.POST.get('new_page_title')
+        content = request.POST.get('new_page_content')
+        check = util.get_entry(title)
+        if not check:
+            util.save_entry(title, content)
+            return redirect('index')
+        else:
+            return render(request, "encyclopedia/new_page.html", {
+            "form": NewPageForm(),
+            "errorMessage": "There is already an entry with that title!"
+            })
+    
