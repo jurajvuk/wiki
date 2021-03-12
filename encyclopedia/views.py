@@ -63,4 +63,11 @@ def create(request):
             "form": NewPageForm(),
             "errorMessage": "There is already an entry with that title!"
             })
+
+def edit(request):
+    if request.method == "GET": 
+        return render(request, "encyclopedia/edit.html", {
+            "content": "testing lorem5 dfsgfdfsg",
+            "form": NewPageForm()  
+        })
     
