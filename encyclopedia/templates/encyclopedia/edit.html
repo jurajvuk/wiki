@@ -9,13 +9,6 @@
     
     <form action="{% url 'create' %}" method="post">
         {% csrf_token %}
-        <div class="inputTitleLabel">
-            {{ form.new_page_title.label_tag }}
-        </div>
-        <div class="inputTitle">
-            {{ form.new_page_title }}
-        </div>
-        <br>
         <div class="inputContentLabel">
             {{ form.new_page_content.label_tag }}
         </div>

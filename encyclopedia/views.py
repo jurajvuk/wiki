@@ -18,6 +18,7 @@ def content(request, title):
         markdowner = Markdown()
         return render(request, "encyclopedia/entry.html", {
         "content": markdowner.convert(content),
+        "title": title,
     })
     else:
         return render(request, "encyclopedia/entry.html", {
@@ -32,6 +33,7 @@ def search(request):
             markdowner = Markdown()
             return render(request, "encyclopedia/entry.html", {
                 "content": markdowner.convert(content),
+                "title": search,
             })
         else:
             all_entries = util.list_entries()
@@ -64,10 +66,10 @@ def create(request):
             "errorMessage": "There is already an entry with that title!"
             })
 
-def edit(request):
+def edit(request, title):
     if request.method == "GET": 
         return render(request, "encyclopedia/edit.html", {
-            "content": "testing lorem5 dfsgfdfsg",
+            "content": util.get_entry(title),
             "form": NewPageForm()  
         })
     
