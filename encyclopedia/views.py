@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django import forms
 from . import util
 from markdown2 import Markdown
+from random import randint
 
 class NewPageForm(forms.Form):
     new_page_title = forms.CharField(label="Title")
@@ -70,6 +71,33 @@ def edit(request, title):
     if request.method == "GET": 
         return render(request, "encyclopedia/edit.html", {
             "content": util.get_entry(title),
+            "title": title,
             "form": NewPageForm()  
         })
+    else:
+        content = request.POST.get('new_page_content')
+        check = util.get_entry(title)
+        if check:
+            markdowner = Markdown()
+            util.save_entry(title, content)
+            return render(request, "encyclopedia/entry.html", {
+                "content": markdowner.convert(content),
+                "title": title
+            })
+        else:
+            return render(request, "encyclopedia/edit.html", {
+            "content": util.get_entry(title),
+            "form": NewPageForm(),
+            "errorMessage": "There is no entry with that title!"
+        })
     
+def random(request):
+    entries = util.list_entries()
+    numberOfEntries = len(entries)
+    randomPage = randint(0, numberOfEntries - 1)
+    randomPost = util.get_entry(entries[randomPage])
+    markdowner = Markdown()
+    return render(request, "encyclopedia/entry.html", {
+            "content": markdowner.convert(randomPost),
+            "title": entries[randomPage],
+            })

@@ -7,14 +7,13 @@
 {% block body %}
     <h1>Edit Page</h1>
     
-    <form action="{% url 'create' %}" method="post">
+    <form action="{% url 'edit' title=title %}" method="post">
         {% csrf_token %}
         <div class="inputContentLabel">
             {{ form.new_page_content.label_tag }}
         </div>
         <div class="inputContent">
-            <textarea type="text" rows="10" cols="150">{{ content }}
-                </textarea>
+            <textarea name="new_page_content" type="text" rows="10" cols="150">{{ content }}</textarea>
         </div>
         <br>
         <input type="submit">
